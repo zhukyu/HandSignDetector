@@ -18,13 +18,18 @@ GPIO.setup(8, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 sentence = ''
 isPressed = False
 img_name = "img.jpg"
-
+message1 = ''
+message2 = ''
+index = len(sentence)
 def setup_connection():
   client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # AF_INET = IP, SOCK_STREAM = TCP
   client.connect(('192.168.43.165', 1002))
   return client
 
 def capture_img():
+  global index
+  global message1
+  global message2
   global sentence
   global img_name
   #cv2.namedWindow("test")
@@ -45,15 +50,31 @@ def capture_img():
     elif k % 256 == 51:
       print("close connect to server")
       break
-    elif GPIO.input(8) == GPIO.HIGH:
+    elif GPIO.input(13) == GPIO.HIGH:
         if not isPressed:
             sentence += ' '
             isPressed = True
-    elif GPIO.input(8) == GPIO.LOW:
+            message1, message2 = splitLineLCD(sentence)
+    elif GPIO.input(13) == GPIO.LOW:
         isPressed = False  
     if GPIO.input(12) == GPIO.HIGH:
         sentence = ''
 
+
+
+    if GPIO.input(8) == GPIO.HIGH and len(sentence) > 32 and index > 0:
+      index -= 1
+      res = findSentenceByIndex(sentence, index)
+      message1, message2 = splitLineLCD(res)
+            
+    if GPIO.input(11) == GPIO.HIGH and index < len(sentence):
+      index += 1  
+      res = findSentenceByIndex(sentence, index)
+      message1, message2 = splitLineLCD(res)
+
+
+    if GPIO.input(15) == GPIO.HIGH:
+      sentence = sentence[0: len(sentence)]
   return img_name
 
 def send_image(path):
@@ -67,6 +88,25 @@ def send_image(path):
     print('sent img to server')
     file.close()
     client.close()
+
+
+def splitLineLCD(res):
+    # res = ''
+    s1 = res[0: 16]
+    s2 = res[16: len(res)]
+    # while True:
+    if len(s2) >= 16:
+        tmp1 = res[len(res)-32:]
+        s1 = tmp1[0:16]
+        s2 = tmp1[16:]
+    else:
+        if len(s1) < 16:
+            s1 = res
+        elif len(s2) < 16:
+            s2 = res[16: len(res)]
+    return s1, s2
+def findSentenceByIndex(sentence, index):
+    return sentence[0:index]
 
 # stream-based protocol
 def receive_message():
@@ -97,8 +137,7 @@ def raise_exception(tmp):
               ctypes.py_object(SystemExit))
         if res > 1:
             ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
-            print('Exception raise failure')
-                
+            print('Exception raise failure')              
 if __name__ == "__main__":
   
   while True:
@@ -108,5 +147,5 @@ if __name__ == "__main__":
     t1.join()
     t2.start()
     t2.join()
-    t3 = Process(target=lcd, args=(sentence,))
+    t3 = Process(target=lcd, args=(message1,message2,))
     t3.start()

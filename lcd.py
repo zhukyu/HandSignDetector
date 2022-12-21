@@ -69,13 +69,15 @@ def lcd_string(message,line):
   for i in range(LCD_WIDTH):
     lcd_byte(ord(message[i]),LCD_CHR)
 
-def lcd(message):
+def lcd(message1, message2):
   # Main program block
 
   # Initialise display
   lcd_init()
-  lcd_string(message,LCD_LINE_1)
+  lcd_string(message1,LCD_LINE_1)
+  lcd_string(message2,LCD_LINE_2)
   time.sleep(10)
+
 
 
 
