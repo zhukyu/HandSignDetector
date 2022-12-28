@@ -118,7 +118,7 @@ def send_message(msg):
 
 # init labels
 labels = list()
-file_object  = open("Model/labels1.txt", "r")
+file_object  = open("Model/labels.txt", "r")
 while True:
     a = file_object.readline().split()
     if a is None or len(a) == 0 or a is EOFError:
