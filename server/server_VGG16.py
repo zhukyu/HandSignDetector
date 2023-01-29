@@ -10,7 +10,7 @@ import math
 
 # init model
 detector = HandDetector(maxHands=1)
-weight = "Model/vggmodel_2812.h5"
+weight = "Model/vggmodel.h5"
 
 # AF_INET = IP, SOCK_STREAM = TCP
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

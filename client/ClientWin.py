@@ -26,7 +26,7 @@ message2 = ''
 index = len(sentence)
 def setup_connection():
   client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # AF_INET = IP, SOCK_STREAM = TCP
-  client.connect(('192.168.16.106', 1002))
+  client.connect(('localhost', 1002))
   return client
 
 # def capture_img():
@@ -114,7 +114,7 @@ def findSentenceByIndex(sentence, index):
 def receive_message():
     global sentence
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # AF_INET = IP, SOCK_STREAM = TCP
-    client.connect(('192.168.16.106', 1002))
+    client.connect(('localhost', 1002))
     msg = ''
     while not msg:
       msg = client.recv(2048).decode()
