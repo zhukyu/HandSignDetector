@@ -5,7 +5,7 @@
 # PBL4 (Project Base Learning 4) :milky_way:
 A Smart system project using Python, Raspberry Pi 3 and other stuffs
 ## Purpose of the project 
-Helping users to use a small and litte cô·product to communicate with deaf and dumb people
+Helping users to use a small and litte cool product to communicate with deaf and dumb people
 ## What to prepare
 Need to install [vggmodel.h5](https://drive.google.com/file/d/1P-QKyXx1UEra-4fmpj4aWsKFHZByhijF/view?usp=share_link) file to train model
 ## Electronic components used
